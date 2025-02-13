@@ -1,6 +1,6 @@
 {
     "name": "permissionless",
-    "version": "0.1.28",
+    "version": "0.2.34",
     "author": "Pimlico",
     "homepage": "https://docs.pimlico.io/permissionless",
     "repository": "github:pimlicolabs/permissionless.js",
@@ -11,13 +11,7 @@
     "type": "module",
     "sideEffects": false,
     "description": "A utility library for working with ERC-4337",
-    "keywords": [
-        "ethereum",
-        "erc-4337",
-        "eip-4337",
-        "paymaster",
-        "bundler"
-    ],
+    "keywords": ["ethereum", "erc-4337", "eip-4337", "paymaster", "bundler"],
     "license": "MIT",
     "exports": {
         ".": {
@@ -30,20 +24,30 @@
             "import": "./_esm/accounts/index.js",
             "default": "./_cjs/accounts/index.js"
         },
+        "./accounts/safe": {
+            "types": "./_types/accounts/safe/index.d.ts",
+            "import": "./_esm/accounts/safe/index.js",
+            "default": "./_cjs/accounts/safe/index.js"
+        },
         "./actions": {
             "types": "./_types/actions/index.d.ts",
             "import": "./_esm/actions/index.js",
             "default": "./_cjs/actions/index.js"
+        },
+        "./actions/erc7579": {
+            "types": "./_types/actions/erc7579.d.ts",
+            "import": "./_esm/actions/erc7579.js",
+            "default": "./_cjs/actions/erc7579.js"
         },
         "./actions/pimlico": {
             "types": "./_types/actions/pimlico.d.ts",
             "import": "./_esm/actions/pimlico.js",
             "default": "./_cjs/actions/pimlico.js"
         },
-        "./actions/stackup": {
-            "types": "./_types/actions/stackup.d.ts",
-            "import": "./_esm/actions/stackup.js",
-            "default": "./_cjs/actions/stackup.js"
+        "./actions/etherspot": {
+            "types": "./_types/actions/etherspot.d.ts",
+            "import": "./_esm/actions/etherspot.js",
+            "default": "./_cjs/actions/etherspot.js"
         },
         "./actions/smartAccount": {
             "types": "./_types/actions/smartAccount.d.ts",
@@ -60,11 +64,6 @@
             "import": "./_esm/clients/pimlico.js",
             "default": "./_cjs/clients/pimlico.js"
         },
-        "./clients/stackup": {
-            "types": "./_types/clients/stackup.d.ts",
-            "import": "./_esm/clients/stackup.js",
-            "default": "./_cjs/clients/stackup.js"
-        },
         "./utils": {
             "types": "./_types/utils/index.d.ts",
             "import": "./_esm/utils/index.js",
@@ -75,18 +74,14 @@
             "import": "./_esm/errors/index.js",
             "default": "./_cjs/errors/index.js"
         },
-        "./types": {
-            "types": "./_types/types/index.d.ts",
-            "import": "./_esm/types/index.js",
-            "default": "./_cjs/types/index.js"
-        },
-        "./experimental": {
-            "types": "./_types/experimental/index.d.ts",
-            "import": "./_esm/experimental/index.js",
-            "default": "./_cjs/experimental/index.js"
+        "./experimental/pimlico": {
+            "types": "./_types/experimental/pimlico/index.d.ts",
+            "import": "./_esm/experimental/pimlico/index.js",
+            "default": "./_cjs/experimental/pimlico/index.js"
         }
     },
     "peerDependencies": {
-        "viem": "^2.9.17"
+        "viem": "^2.21.54",
+        "webauthn-p256": "0.0.10"
     }
 }

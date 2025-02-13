@@ -1,52 +1,59 @@
-import type { Account, Address } from "viem"
-import { deepHexlify, transactionReceiptStatus } from "./deepHexlify"
-import { getAddressFromInitCodeOrPaymasterAndData } from "./getAddressFromInitCodeOrPaymasterAndData"
+import { deepHexlify, transactionReceiptStatus } from "./deepHexlify.js"
+import { getAddressFromInitCodeOrPaymasterAndData } from "./getAddressFromInitCodeOrPaymasterAndData.js"
 import {
     type GetRequiredPrefundReturnType,
     getRequiredPrefund
-} from "./getRequiredPrefund"
-import {
-    type GetUserOperationHashParams,
-    getUserOperationHash
-} from "./getUserOperationHash"
-import { isSmartAccountDeployed } from "./isSmartAccountDeployed"
-import { providerToSmartAccountSigner } from "./providerToSmartAccountSigner"
-import {
-    AccountOrClientNotFoundError,
-    type SignUserOperationHashWithECDSAParams,
-    signUserOperationHashWithECDSA
-} from "./signUserOperationHashWithECDSA"
-import { walletClientToSmartAccountSigner } from "./walletClientToSmartAccountSigner"
+} from "./getRequiredPrefund.js"
+import { isSmartAccountDeployed } from "./isSmartAccountDeployed.js"
+import { toOwner } from "./toOwner.js"
 
-export function parseAccount(account: Address | Account): Account {
-    if (typeof account === "string")
-        return { address: account, type: "json-rpc" }
-    return account
-}
-import {
-    ENTRYPOINT_ADDRESS_V06,
-    ENTRYPOINT_ADDRESS_V07,
-    getEntryPointVersion
-} from "./getEntryPointVersion"
+import { decodeNonce } from "./decodeNonce.js"
+import { encodeNonce } from "./encodeNonce.js"
 
-import { getPackedUserOperation } from "./getPackedUserOperation"
+import {
+    type EncodeInstallModuleParameters,
+    encodeInstallModule
+} from "./encodeInstallModule.js"
+import { getPackedUserOperation } from "./getPackedUserOperation.js"
+
+import {
+    type EncodeCallDataParams,
+    encode7579Calls
+} from "./encode7579Calls.js"
+
+import {
+    type DecodeCallDataReturnType,
+    decode7579Calls
+} from "./decode7579Calls.js"
+
+import {
+    type Erc20AllowanceOverrideParameters,
+    erc20AllowanceOverride
+} from "./erc20AllowanceOverride.js"
+import {
+    type Erc20BalanceOverrideParameters,
+    erc20BalanceOverride
+} from "./erc20BalanceOverride.js"
 
 export {
     transactionReceiptStatus,
     deepHexlify,
-    getUserOperationHash,
     getRequiredPrefund,
-    walletClientToSmartAccountSigner,
+    toOwner,
     type GetRequiredPrefundReturnType,
-    type GetUserOperationHashParams,
-    signUserOperationHashWithECDSA,
-    type SignUserOperationHashWithECDSAParams,
-    AccountOrClientNotFoundError,
     isSmartAccountDeployed,
-    providerToSmartAccountSigner,
     getAddressFromInitCodeOrPaymasterAndData,
     getPackedUserOperation,
-    getEntryPointVersion,
-    ENTRYPOINT_ADDRESS_V06,
-    ENTRYPOINT_ADDRESS_V07
+    encodeNonce,
+    decodeNonce,
+    type EncodeInstallModuleParameters,
+    encodeInstallModule,
+    type EncodeCallDataParams,
+    encode7579Calls,
+    decode7579Calls,
+    type DecodeCallDataReturnType,
+    erc20AllowanceOverride,
+    erc20BalanceOverride,
+    type Erc20AllowanceOverrideParameters,
+    type Erc20BalanceOverrideParameters
 }

@@ -1,16 +1,11 @@
-import type { PimlicoPaymasterClient } from "permissionless/clients/pimlico"
-import type { EntryPoint } from "permissionless/types"
 import type { Address, Hex, PublicClient } from "viem"
 
-export type AAParamType<T extends EntryPoint> = {
-    entryPoint: T
-    paymasterClient?: PimlicoPaymasterClient<T>
+export type AAParamType<entryPointVersion extends "0.6" | "0.7"> = {
+    entryPoint: {
+        version: entryPointVersion
+    }
+    anvilRpc: string
+    altoRpc: string
+    paymasterRpc: string
     privateKey?: Hex
-}
-
-// param used when testing with a already deployed contract
-export type ExistingSignerParamType = {
-    publicClient: PublicClient
-    privateKey: Hex
-    existingAddress: Address
 }

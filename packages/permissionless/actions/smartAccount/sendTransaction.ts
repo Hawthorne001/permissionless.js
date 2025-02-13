@@ -5,24 +5,14 @@ import type {
     SendTransactionParameters,
     Transport
 } from "viem"
-import { getAction } from "viem/utils"
-import type { SmartAccount } from "../../accounts/types"
-import type { Prettify } from "../../types/"
-import type { EntryPoint } from "../../types/entrypoint"
-import { AccountOrClientNotFoundError, parseAccount } from "../../utils/"
-import { waitForUserOperationReceipt } from "../bundler/waitForUserOperationReceipt"
-import type { Middleware } from "./prepareUserOperationRequest"
-import { sendUserOperation } from "./sendUserOperation"
-
-export type SendTransactionWithPaymasterParameters<
-    entryPoint extends EntryPoint,
-    TChain extends Chain | undefined = Chain | undefined,
-    TAccount extends SmartAccount<entryPoint> | undefined =
-        | SmartAccount<entryPoint>
-        | undefined,
-    TChainOverride extends Chain | undefined = Chain | undefined
-> = SendTransactionParameters<TChain, TAccount, TChainOverride> &
-    Middleware<entryPoint>
+import {
+    type SendUserOperationParameters,
+    type SmartAccount,
+    sendUserOperation,
+    waitForUserOperationReceipt
+} from "viem/account-abstraction"
+import { getAction, parseAccount } from "viem/utils"
+import { AccountNotFoundError } from "../../errors/index.js"
 
 /**
  * Creates, signs, and sends a new transaction to the network.
@@ -71,67 +61,64 @@ export type SendTransactionWithPaymasterParameters<
  * })
  */
 export async function sendTransaction<
-    TChain extends Chain | undefined,
-    TAccount extends SmartAccount<entryPoint> | undefined,
-    entryPoint extends EntryPoint,
-    TChainOverride extends Chain | undefined = Chain | undefined
+    account extends SmartAccount | undefined,
+    chain extends Chain | undefined,
+    accountOverride extends SmartAccount | undefined = undefined,
+    chainOverride extends Chain | undefined = Chain | undefined,
+    calls extends readonly unknown[] = readonly unknown[]
 >(
-    client: Client<Transport, TChain, TAccount>,
-    args: Prettify<
-        SendTransactionWithPaymasterParameters<
-            entryPoint,
-            TChain,
-            TAccount,
-            TChainOverride
-        >
-    >
+    client: Client<Transport, chain, account>,
+    args:
+        | SendTransactionParameters<chain, account, chainOverride>
+        | SendUserOperationParameters<account, accountOverride, calls>
 ): Promise<Hash> {
-    const {
-        account: account_ = client.account,
-        data,
-        maxFeePerGas,
-        maxPriorityFeePerGas,
-        to,
-        value,
-        nonce,
-        middleware
-    } = args
+    let userOpHash: Hash
 
-    if (!account_) {
-        throw new AccountOrClientNotFoundError({
-            docsPath: "/docs/actions/wallet/sendTransaction"
-        })
-    }
+    if ("to" in args) {
+        const {
+            account: account_ = client.account,
+            data,
+            maxFeePerGas,
+            maxPriorityFeePerGas,
+            to,
+            value,
+            nonce
+        } = args
 
-    const account = parseAccount(account_) as SmartAccount<entryPoint>
+        if (!account_) {
+            throw new AccountNotFoundError({
+                docsPath: "/docs/actions/wallet/sendTransaction"
+            })
+        }
 
-    if (!to) throw new Error("Missing to address")
+        const account = parseAccount(account_) as SmartAccount
 
-    if (account.type !== "local") {
-        throw new Error("RPC account type not supported")
-    }
+        if (!to) throw new Error("Missing to address")
 
-    const callData = await account.encodeCallData({
-        to,
-        value: value || BigInt(0),
-        data: data || "0x"
-    })
-
-    const userOpHash = await getAction(
-        client,
-        sendUserOperation<entryPoint>,
-        "sendUserOperation"
-    )({
-        userOperation: {
-            sender: account.address,
-            maxFeePerGas: maxFeePerGas || BigInt(0),
-            maxPriorityFeePerGas: maxPriorityFeePerGas || BigInt(0),
-            callData: callData,
+        userOpHash = await getAction(
+            client,
+            sendUserOperation,
+            "sendUserOperation"
+        )({
+            calls: [
+                {
+                    to,
+                    value: value || BigInt(0),
+                    data: data || "0x"
+                }
+            ],
+            account,
+            maxFeePerGas,
+            maxPriorityFeePerGas,
             nonce: nonce ? BigInt(nonce) : undefined
-        },
-        account: account,
-        middleware
-    })
+        })
+    } else {
+        userOpHash = await getAction(
+            client,
+            sendUserOperation,
+            "sendUserOperation"
+        )({ ...args } as SendUserOperationParameters<account, accountOverride>)
+    }
 
     const userOperationReceipt = await getAction(
         client,

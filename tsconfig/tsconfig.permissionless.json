@@ -5,12 +5,13 @@
         "../packages/permissionless"
     ],
     "exclude": [
+        "../packages/permissionless-test/*",
+        "../packages/permissionless/**/setupTests.ts",
         "../packages/permissionless/**/*.test.ts",
         "../packages/permissionless/**/*.test-d.ts",
         "../packages/permissionless/**/*.bench.ts"
     ],
     "compilerOptions": {
-        "moduleResolution": "node",
         "sourceMap": true,
         "rootDir": "../packages/permissionless"
     }

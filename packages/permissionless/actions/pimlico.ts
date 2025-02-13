@@ -1,56 +1,56 @@
 import {
+    type GetTokenQuotesParameters,
+    type GetTokenQuotesReturnType,
+    getTokenQuotes
+} from "./pimlico/getTokenQuotes.js"
+import {
     type GetUserOperationGasPriceReturnType,
     getUserOperationGasPrice
-} from "./pimlico/getUserOperationGasPrice"
+} from "./pimlico/getUserOperationGasPrice.js"
 import {
     type GetUserOperationStatusParameters,
     type GetUserOperationStatusReturnType,
     getUserOperationStatus
-} from "./pimlico/getUserOperationStatus"
+} from "./pimlico/getUserOperationStatus.js"
 import {
     type SendCompressedUserOperationParameters,
     sendCompressedUserOperation
-} from "./pimlico/sendCompressedUserOperation"
+} from "./pimlico/sendCompressedUserOperation.js"
 import {
     type PimlicoSponsorUserOperationParameters,
     type SponsorUserOperationReturnType,
     sponsorUserOperation
-} from "./pimlico/sponsorUserOperation"
+} from "./pimlico/sponsorUserOperation.js"
 
-import type {
-    PimlicoBundlerActions,
-    PimlicoPaymasterClientActions
-} from "../clients/decorators/pimlico"
-import {
-    pimlicoBundlerActions,
-    pimlicoPaymasterActions
-} from "../clients/decorators/pimlico"
+import type { PimlicoActions } from "../clients/decorators/pimlico.js"
+import { pimlicoActions } from "../clients/decorators/pimlico.js"
 
 import {
     type ValidateSponsorshipPolicies,
     type ValidateSponsorshipPoliciesParameters,
     validateSponsorshipPolicies
-} from "./pimlico/validateSponsorshipPolicies"
+} from "./pimlico/validateSponsorshipPolicies.js"
 
 export type {
     GetUserOperationGasPriceReturnType,
     GetUserOperationStatusParameters,
     GetUserOperationStatusReturnType,
-    PimlicoBundlerActions,
-    PimlicoPaymasterClientActions,
+    PimlicoActions,
     PimlicoSponsorUserOperationParameters,
     SendCompressedUserOperationParameters,
     SponsorUserOperationReturnType,
     ValidateSponsorshipPolicies,
-    ValidateSponsorshipPoliciesParameters
+    ValidateSponsorshipPoliciesParameters,
+    GetTokenQuotesParameters,
+    GetTokenQuotesReturnType
 }
 
 export {
     getUserOperationGasPrice,
     getUserOperationStatus,
-    pimlicoBundlerActions,
-    pimlicoPaymasterActions,
+    pimlicoActions,
     sendCompressedUserOperation,
     sponsorUserOperation,
-    validateSponsorshipPolicies
+    validateSponsorshipPolicies,
+    getTokenQuotes
 }

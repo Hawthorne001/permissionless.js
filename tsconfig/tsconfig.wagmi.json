@@ -5,12 +5,13 @@
         "../packages/wagmi"
     ],
     "exclude": [
+        "../packages/wagmi/node_modules",
         "../packages/wagmi/**/*.test.ts",
         "../packages/wagmi/**/*.test-d.ts",
         "../packages/wagmi/**/*.bench.ts"
     ],
     "compilerOptions": {
-        "moduleResolution": "node",
+        "moduleResolution": "Bundler",
         "sourceMap": true,
         "rootDir": "../packages/wagmi"
     },
