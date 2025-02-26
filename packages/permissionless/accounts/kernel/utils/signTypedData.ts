@@ -1,43 +1,42 @@
 import {
-    type Account,
-    type Chain,
-    type Client,
     type LocalAccount,
-    type SignTypedDataParameters,
     type SignTypedDataReturnType,
-    type Transport,
-    type TypedData,
+    type TypedDataDefinition,
     getTypesForEIP712Domain,
     hashTypedData,
-    publicActions,
     validateTypedData
 } from "viem"
-
+import type { WebAuthnAccount } from "viem/account-abstraction"
+import { isWebAuthnAccount } from "./isWebAuthnAccount.js"
+import { signMessage } from "./signMessage.js"
 import {
-    signMessage as _signMessage,
-    signTypedData as _signTypedData
-} from "viem/actions"
-import { type WrapMessageHashParams, wrapMessageHash } from "./wrapMessageHash"
+    type WrapMessageHashParams,
+    wrapMessageHash
+} from "./wrapMessageHash.js"
 
-export async function signTypedData<
-    const typedData extends TypedData | Record<string, unknown>,
-    primaryType extends keyof typedData | "EIP712Domain",
-    chain extends Chain | undefined,
-    account extends Account | undefined
->(
-    client: Client<Transport, chain, account>,
-    parameters: SignTypedDataParameters<typedData, primaryType, account> &
-        WrapMessageHashParams
+export async function signTypedData(
+    parameters: TypedDataDefinition &
+        WrapMessageHashParams & {
+            owner: LocalAccount | WebAuthnAccount
+        }
 ): Promise<SignTypedDataReturnType> {
     const {
-        account: account_,
+        owner,
         accountAddress,
-        accountVersion,
+        kernelVersion: accountVersion,
+        chainId,
         ...typedData
-    } = parameters as unknown as SignTypedDataParameters & WrapMessageHashParams
-    if (accountVersion === "0.2.2") {
-        return _signTypedData(client, { account: account_, ...typedData })
+    } = parameters
+
+    if (
+        (accountVersion === "0.2.1" || accountVersion === "0.2.2") &&
+        !isWebAuthnAccount(owner)
+    ) {
+        return owner.signTypedData({
+            ...typedData
+        })
     }
+
     const { message, primaryType, types: _types, domain } = typedData
     const types = {
         EIP712Domain: getTypesForEIP712Domain({
@@ -58,17 +57,22 @@ export async function signTypedData<
     const typedHash = hashTypedData({ message, primaryType, types, domain })
 
     const wrappedMessageHash = wrapMessageHash(typedHash, {
-        accountVersion,
+        kernelVersion: accountVersion,
         accountAddress,
-        chainId: client.chain
-            ? client.chain.id
-            : await client.extend(publicActions).getChainId()
+        chainId: chainId
     })
 
-    const signature = await _signMessage(client, {
-        account: account_ as LocalAccount,
+    if (isWebAuthnAccount(owner)) {
+        return signMessage({
+            message: { raw: wrappedMessageHash },
+            owner,
+            accountAddress,
+            kernelVersion: accountVersion,
+            chainId
+        })
+    }
+
+    return owner.signMessage({
         message: { raw: wrappedMessageHash }
     })
-
-    return signature
 }

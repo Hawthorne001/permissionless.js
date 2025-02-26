@@ -6,12 +6,13 @@ import {
     type Transport,
     type TypedData,
     type TypedDataDefinition,
+    type TypedDataDomain,
     getTypesForEIP712Domain,
     validateTypedData
 } from "viem"
-import type { SmartAccount } from "../../accounts/types"
-import type { EntryPoint } from "../../types/entrypoint"
-import { AccountOrClientNotFoundError, parseAccount } from "../../utils/"
+import type { SmartAccount } from "viem/account-abstraction"
+import { parseAccount } from "viem/utils"
+import { AccountNotFoundError } from "../../errors/index.js"
 
 /**
  * Signs typed data and calculates an Ethereum-specific signature in [https://eips.ethereum.org/EIPS/eip-712](https://eips.ethereum.org/EIPS/eip-712): `sign(keccak256("\x19\x01" ‖ domainSeparator ‖ hashStruct(message)))`
@@ -112,13 +113,11 @@ import { AccountOrClientNotFoundError, parseAccount } from "../../utils/"
  * })
  */
 export async function signTypedData<
-    entryPoint extends EntryPoint,
     const TTypedData extends TypedData | { [key: string]: unknown },
     TPrimaryType extends string,
-    TChain extends Chain | undefined,
-    TAccount extends SmartAccount<entryPoint> | undefined
+    TAccount extends SmartAccount | undefined = SmartAccount | undefined
 >(
-    client: Client<Transport, TChain, TAccount>,
+    client: Client<Transport, Chain | undefined, TAccount>,
     {
         account: account_ = client.account,
         domain,
@@ -128,15 +127,17 @@ export async function signTypedData<
     }: SignTypedDataParameters<TTypedData, TPrimaryType, TAccount>
 ): Promise<SignTypedDataReturnType> {
     if (!account_) {
-        throw new AccountOrClientNotFoundError({
+        throw new AccountNotFoundError({
             docsPath: "/docs/actions/wallet/signMessage"
         })
     }
 
-    const account = parseAccount(account_)
+    const account = parseAccount(account_) as SmartAccount
 
     const types = {
-        EIP712Domain: getTypesForEIP712Domain({ domain }),
+        EIP712Domain: getTypesForEIP712Domain({ domain } as {
+            domain: TypedDataDomain
+        }),
         ...(types_ as TTypedData)
     }
 
@@ -147,14 +148,10 @@ export async function signTypedData<
         types
     } as TypedDataDefinition)
 
-    if (account.type === "local") {
-        return account.signTypedData({
-            domain,
-            primaryType,
-            types,
-            message
-        } as TypedDataDefinition)
-    }
-
-    throw new Error("Sign type message is not supported by this account")
+    return account.signTypedData({
+        domain,
+        primaryType,
+        types,
+        message
+    } as TypedDataDefinition)
 }
