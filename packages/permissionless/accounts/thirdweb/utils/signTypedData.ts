@@ -21,7 +21,7 @@ export async function signTypedData(
     const isSelfVerifyingContract =
         (
             typedData.domain as TypedDataDomain
-        )?.verifyingContract?.toLowerCase() === accountAddress
+        )?.verifyingContract?.toLowerCase() === accountAddress.toLowerCase()
 
     // If this is a self-verifying contract, we can use the admin's signature
     if (isSelfVerifyingContract) {
