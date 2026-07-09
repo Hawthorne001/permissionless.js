@@ -1,16 +1,6 @@
 import type { Address, Chain, Client, Hash, Prettify, Transport } from "viem"
 import type { EntryPointVersion } from "viem/account-abstraction"
 import {
-    type GetTokenQuotesParameters,
-    type GetTokenQuotesReturnType,
-    type SendCompressedUserOperationParameters,
-    type ValidateSponsorshipPolicies,
-    type ValidateSponsorshipPoliciesParameters,
-    getTokenQuotes,
-    sendCompressedUserOperation,
-    validateSponsorshipPolicies
-} from "../../actions/pimlico.js"
-import {
     type EstimateErc20PaymasterCostParameters,
     type EstimateErc20PaymasterCostReturnType,
     estimateErc20PaymasterCost
@@ -24,6 +14,16 @@ import {
     type GetUserOperationStatusReturnType,
     getUserOperationStatus
 } from "../../actions/pimlico/getUserOperationStatus.js"
+import {
+    type GetTokenQuotesParameters,
+    type GetTokenQuotesReturnType,
+    type SendCompressedUserOperationParameters,
+    type ValidateSponsorshipPolicies,
+    type ValidateSponsorshipPoliciesParameters,
+    getTokenQuotes,
+    sendCompressedUserOperation,
+    validateSponsorshipPolicies
+} from "../../actions/pimlico/index.js"
 import {
     type PimlicoSponsorUserOperationParameters,
     type SponsorUserOperationReturnType,

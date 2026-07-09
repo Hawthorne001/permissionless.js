@@ -97,6 +97,10 @@ export const getWebAuthnSignature = async ({
 
     const [, fields] = match
 
+    if (fields === undefined) {
+        throw new Error("challenge not found in client data JSON")
+    }
+
     return encodeAbiParameters(
         [
             { name: "authenticatorData", type: "bytes" },

@@ -25,7 +25,7 @@ import {
 } from "viem/account-abstraction"
 import { getChainId as getChainId_, readContract } from "viem/actions"
 import { getAction, parseAccount } from "viem/utils"
-import { getTokenQuotes } from "../../../actions/pimlico.js"
+import { getTokenQuotes } from "../../../actions/pimlico/index.js"
 import { erc20BalanceOverride } from "../../../utils/erc20BalanceOverride.js"
 
 const MAINNET_USDT_ADDRESS = getAddress(
@@ -111,7 +111,9 @@ export const prepareUserOperationForErc20Paymaster =
                 entryPointAddress: account.entryPoint.address
             })
 
-            if (quotes.length === 0) {
+            const quote = quotes[0]
+
+            if (quote === undefined) {
                 throw new RpcError(new Error("Quotes not found"), {
                     shortMessage:
                         "client didn't return token quotes, check if the token is supported"
@@ -122,7 +124,7 @@ export const prepareUserOperationForErc20Paymaster =
                 postOpGas,
                 exchangeRate,
                 paymaster: paymasterERC20Address
-            } = quotes[0]
+            } = quote
 
             let calls = parameters.calls
 
@@ -155,7 +157,7 @@ export const prepareUserOperationForErc20Paymaster =
             // Call prepareUserOperation
             ////////////////////////////////////////////////////////////////////////////////
 
-            const balanceSlot = _balanceSlot ?? quotes[0].balanceSlot
+            const balanceSlot = _balanceSlot ?? quote.balanceSlot
             const hasBalanceSlot = balanceSlot !== undefined
 
             if (!hasBalanceSlot && balanceOverride) {

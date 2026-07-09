@@ -3,40 +3,34 @@ import type {
     GetSmartAccountParameter,
     SmartAccount
 } from "viem/account-abstraction"
-import { accountId } from "./erc7579/accountId.js"
-import {
-    type InstallModuleParameters,
-    installModule
-} from "./erc7579/installModule.js"
+import { accountId } from "./accountId.js"
+import { type InstallModuleParameters, installModule } from "./installModule.js"
 import {
     type InstallModulesParameters,
     installModules
-} from "./erc7579/installModules.js"
+} from "./installModules.js"
 import {
     type IsModuleInstalledParameters,
     isModuleInstalled
-} from "./erc7579/isModuleInstalled.js"
+} from "./isModuleInstalled.js"
 import {
     type SupportsExecutionModeParameters,
     supportsExecutionMode
-} from "./erc7579/supportsExecutionMode.js"
-import type {
-    CallType,
-    ExecutionMode
-} from "./erc7579/supportsExecutionMode.js"
+} from "./supportsExecutionMode.js"
+import type { CallType, ExecutionMode } from "./supportsExecutionMode.js"
 import {
     type SupportsModuleParameters,
     supportsModule
-} from "./erc7579/supportsModule.js"
-import type { ModuleType } from "./erc7579/supportsModule.js"
+} from "./supportsModule.js"
+import type { ModuleType } from "./supportsModule.js"
 import {
     type UninstallModuleParameters,
     uninstallModule
-} from "./erc7579/uninstallModule.js"
+} from "./uninstallModule.js"
 import {
     type UninstallModulesParameters,
     uninstallModules
-} from "./erc7579/uninstallModules.js"
+} from "./uninstallModules.js"
 
 export type Erc7579Actions<TSmartAccount extends SmartAccount | undefined> = {
     accountId: (

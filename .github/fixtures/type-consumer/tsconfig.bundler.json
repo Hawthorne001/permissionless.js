@@ -1,0 +1,16 @@
+{
+    // Modern resolution follows the exports map to the published .d.ts files.
+    // skipLibCheck is off and the strictest consumer flags are on, so this
+    // verifies the declaration surface stays clean for the pickiest setups.
+    "compilerOptions": {
+        "target": "ES2022",
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "strict": true,
+        "noUncheckedIndexedAccess": true,
+        "exactOptionalPropertyTypes": true,
+        "skipLibCheck": false,
+        "noEmit": true
+    },
+    "files": ["consumer.ts"]
+}

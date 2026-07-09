@@ -288,11 +288,19 @@ export async function toBiconomySmartAccount(
                 const calls: { to: Address; value: bigint; data: Hex }[] = []
 
                 for (let i = 0; i < decoded.args[0].length; i++) {
-                    calls.push({
-                        to: decoded.args[0][i],
-                        value: decoded.args[1][i],
-                        data: decoded.args[2][i]
-                    })
+                    const to = decoded.args[0][i]
+                    const value = decoded.args[1][i]
+                    const data = decoded.args[2][i]
+
+                    if (
+                        to === undefined ||
+                        value === undefined ||
+                        data === undefined
+                    ) {
+                        throw new Error("Invalid batch call data")
+                    }
+
+                    calls.push({ to, value, data })
                 }
 
                 return calls

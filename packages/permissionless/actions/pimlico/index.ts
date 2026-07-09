@@ -2,37 +2,37 @@ export {
     type GetTokenQuotesParameters,
     type GetTokenQuotesReturnType,
     getTokenQuotes
-} from "./pimlico/getTokenQuotes.js"
+} from "./getTokenQuotes.js"
 
 export {
     type GetUserOperationGasPriceReturnType,
     getUserOperationGasPrice
-} from "./pimlico/getUserOperationGasPrice.js"
+} from "./getUserOperationGasPrice.js"
 
 export {
     type GetUserOperationStatusParameters,
     type GetUserOperationStatusReturnType,
     getUserOperationStatus
-} from "./pimlico/getUserOperationStatus.js"
+} from "./getUserOperationStatus.js"
 
 export {
     type SendCompressedUserOperationParameters,
     sendCompressedUserOperation
-} from "./pimlico/sendCompressedUserOperation.js"
+} from "./sendCompressedUserOperation.js"
 
 export {
     type PimlicoSponsorUserOperationParameters,
     type SponsorUserOperationReturnType,
     sponsorUserOperation
-} from "./pimlico/sponsorUserOperation.js"
+} from "./sponsorUserOperation.js"
 
 export {
     type PimlicoActions,
     pimlicoActions
-} from "../clients/decorators/pimlico.js"
+} from "../../clients/decorators/pimlico.js"
 
 export {
     type ValidateSponsorshipPolicies,
     type ValidateSponsorshipPoliciesParameters,
     validateSponsorshipPolicies
-} from "./pimlico/validateSponsorshipPolicies.js"
+} from "./validateSponsorshipPolicies.js"
