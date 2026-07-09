@@ -16,5 +16,5 @@
         // root), so unrelated workspace typings leak into this fixture.
         "types": []
     },
-    "files": ["consumer.ts"]
+    "files": ["consumer.ts", "issue-500.ts"]
 }
