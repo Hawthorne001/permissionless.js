@@ -1,5 +1,11 @@
 # @permissionless/wagmi
 
+## 0.1.5
+
+### Patch Changes
+
+- ddb762fb4b05f0edb9bdb5f4d67abb5493563eac: Fixed `useAvailableCapabilities` to return `undefined` instead of throwing when the connected chain has no capabilities entry, and hardened receipt handling in `useWaitForTransactionReceipt`. The package now compiles under `noUncheckedIndexedAccess`.
+
 ## 0.1.4
 
 ### Patch Changes
