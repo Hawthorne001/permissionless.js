@@ -18,5 +18,9 @@
         // root), so unrelated workspace typings leak into this fixture.
         "types": []
     },
+    // issue-500.ts is checked only by tsconfig.bundler.json: its direct viem
+    // value imports (viem/accounts, viem/chains) make node10 resolution pull
+    // raw .ts sources out of viem's nested ox install — a fixture dependency
+    // quirk unrelated to what either file guards.
     "files": ["consumer.ts"]
 }
