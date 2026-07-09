@@ -774,6 +774,13 @@ export async function toKernelSmartAccount<
                     ]
                 })
 
+                if (
+                    installFallbackCall === undefined ||
+                    uninstallFallbackCall === undefined
+                ) {
+                    throw new Error("Failed to encode fallback module calls")
+                }
+
                 const executeCallData = encodeCallData({
                     calls,
                     kernelVersion

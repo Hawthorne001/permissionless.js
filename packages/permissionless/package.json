@@ -11,14 +11,19 @@
     "type": "module",
     "sideEffects": false,
     "description": "A utility library for working with ERC-4337",
-    "keywords": [
-        "ethereum",
-        "erc-4337",
-        "eip-4337",
-        "paymaster",
-        "bundler"
-    ],
+    "keywords": ["ethereum", "erc-4337", "eip-4337", "paymaster", "bundler"],
     "license": "MIT",
+    "files": [
+        "*",
+        "!**/*.test.ts",
+        "!**/*.test.ts.snap",
+        "!**/*.test-d.ts",
+        "!**/*.bench.ts",
+        "!**/setupTests.ts",
+        "!**/*.tsbuildinfo",
+        "!vitest.config.ts",
+        "!coverage"
+    ],
     "exports": {
         ".": {
             "types": "./_types/index.d.ts",
@@ -81,29 +86,29 @@
             "default": "./_cjs/actions/index.js"
         },
         "./actions/erc7579": {
-            "types": "./_types/actions/erc7579.d.ts",
-            "import": "./_esm/actions/erc7579.js",
-            "default": "./_cjs/actions/erc7579.js"
+            "types": "./_types/actions/erc7579/index.d.ts",
+            "import": "./_esm/actions/erc7579/index.js",
+            "default": "./_cjs/actions/erc7579/index.js"
         },
         "./actions/pimlico": {
-            "types": "./_types/actions/pimlico.d.ts",
-            "import": "./_esm/actions/pimlico.js",
-            "default": "./_cjs/actions/pimlico.js"
+            "types": "./_types/actions/pimlico/index.d.ts",
+            "import": "./_esm/actions/pimlico/index.js",
+            "default": "./_cjs/actions/pimlico/index.js"
         },
         "./actions/passkeyServer": {
-            "types": "./_types/actions/passkeyServer.d.ts",
-            "import": "./_esm/actions/passkeyServer.js",
-            "default": "./_cjs/actions/passkeyServer.js"
+            "types": "./_types/actions/passkeyServer/index.d.ts",
+            "import": "./_esm/actions/passkeyServer/index.js",
+            "default": "./_cjs/actions/passkeyServer/index.js"
         },
         "./actions/etherspot": {
-            "types": "./_types/actions/etherspot.d.ts",
-            "import": "./_esm/actions/etherspot.js",
-            "default": "./_cjs/actions/etherspot.js"
+            "types": "./_types/actions/etherspot/index.d.ts",
+            "import": "./_esm/actions/etherspot/index.js",
+            "default": "./_cjs/actions/etherspot/index.js"
         },
         "./actions/smartAccount": {
-            "types": "./_types/actions/smartAccount.d.ts",
-            "import": "./_esm/actions/smartAccount.js",
-            "default": "./_cjs/actions/smartAccount.js"
+            "types": "./_types/actions/smartAccount/index.d.ts",
+            "import": "./_esm/actions/smartAccount/index.js",
+            "default": "./_cjs/actions/smartAccount/index.js"
         },
         "./clients": {
             "types": "./_types/clients/index.d.ts",
@@ -111,14 +116,14 @@
             "default": "./_cjs/clients/index.js"
         },
         "./clients/pimlico": {
-            "types": "./_types/clients/pimlico.d.ts",
-            "import": "./_esm/clients/pimlico.js",
-            "default": "./_cjs/clients/pimlico.js"
+            "types": "./_types/clients/pimlico/index.d.ts",
+            "import": "./_esm/clients/pimlico/index.js",
+            "default": "./_cjs/clients/pimlico/index.js"
         },
         "./clients/passkeyServer": {
-            "types": "./_types/clients/passkeyServer.d.ts",
-            "import": "./_esm/clients/passkeyServer.js",
-            "default": "./_cjs/clients/passkeyServer.js"
+            "types": "./_types/clients/passkeyServer/index.d.ts",
+            "import": "./_esm/clients/passkeyServer/index.js",
+            "default": "./_cjs/clients/passkeyServer/index.js"
         },
         "./utils": {
             "types": "./_types/utils/index.d.ts",

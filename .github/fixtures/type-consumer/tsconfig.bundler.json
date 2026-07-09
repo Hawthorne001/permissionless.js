@@ -1,0 +1,20 @@
+{
+    // Modern resolution follows the exports map to the published .d.ts files.
+    // skipLibCheck is off and the strictest consumer flags are on, so this
+    // verifies the declaration surface stays clean for the pickiest setups.
+    "compilerOptions": {
+        "target": "ES2022",
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "strict": true,
+        "noUncheckedIndexedAccess": true,
+        "exactOptionalPropertyTypes": true,
+        "skipLibCheck": false,
+        "noEmit": true,
+        // Keep the program hermetic: without this, tsc auto-includes every
+        // node_modules/@types package from parent directories (the monorepo
+        // root), so unrelated workspace typings leak into this fixture.
+        "types": []
+    },
+    "files": ["consumer.ts"]
+}

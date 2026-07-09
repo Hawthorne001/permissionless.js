@@ -18,8 +18,8 @@ import {
     entryPoint07Address,
     paymasterActions
 } from "viem/account-abstraction"
-import type { PimlicoRpcSchema } from "../types/pimlico.js"
-import { type PimlicoActions, pimlicoActions } from "./decorators/pimlico.js"
+import type { PimlicoRpcSchema } from "../../types/pimlico.js"
+import { type PimlicoActions, pimlicoActions } from "../decorators/pimlico.js"
 
 export type PimlicoClient<
     entryPointVersion extends EntryPointVersion = EntryPointVersion,

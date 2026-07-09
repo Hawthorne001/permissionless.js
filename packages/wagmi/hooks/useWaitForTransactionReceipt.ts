@@ -222,11 +222,7 @@ export async function waitForCallsStatus<
                             )
                                 return
 
-                            if (receipt.receipts?.length === 0) {
-                                return
-                            }
-
-                            const finalReceipt = receipt.receipts
+                            const finalReceipt = receipt.receipts?.[0]
 
                             if (!finalReceipt) {
                                 return
@@ -236,7 +232,7 @@ export async function waitForCallsStatus<
                                 client,
                                 getTransactionReceipt,
                                 "getTransactionReceipt"
-                            )({ hash: finalReceipt[0].transactionHash })
+                            )({ hash: finalReceipt.transactionHash })
 
                             done(() =>
                                 emit.resolve({
@@ -272,11 +268,7 @@ export async function waitForCallsStatus<
                         )
                             return
 
-                        if (receipt.receipts?.length === 0) {
-                            return
-                        }
-
-                        const finalReceipt = receipt.receipts
+                        const finalReceipt = receipt.receipts?.[0]
 
                         if (!finalReceipt) {
                             return
@@ -286,7 +278,7 @@ export async function waitForCallsStatus<
                             client,
                             getTransactionReceipt,
                             "getTransactionReceipt"
-                        )({ hash: finalReceipt[0].transactionHash })
+                        )({ hash: finalReceipt.transactionHash })
 
                         done(() =>
                             emit.resolve({

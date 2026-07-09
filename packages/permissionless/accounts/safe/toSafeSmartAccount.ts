@@ -904,15 +904,17 @@ const getInitializerCode = async ({
         })
     }
 
-    if (!useMultiSendForSetup && multiCalls.length === 1) {
+    const firstMultiCall = multiCalls[0]
+
+    if (!useMultiSendForSetup && multiCalls.length === 1 && firstMultiCall) {
         return encodeFunctionData({
             abi: setupAbi,
             functionName: "setup",
             args: [
                 ownerAddresses,
                 threshold,
-                multiCalls[0].to,
-                multiCalls[0].data,
+                firstMultiCall.to,
+                firstMultiCall.data,
                 safe4337ModuleAddress,
                 paymentToken,
                 payment,

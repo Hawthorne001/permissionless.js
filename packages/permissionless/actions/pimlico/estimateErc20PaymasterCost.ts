@@ -76,9 +76,15 @@ export const estimateErc20PaymasterCost = async <
         chain
     })
 
-    const postOpGas = quotes[0].postOpGas
-    const exchangeRate = quotes[0].exchangeRate
-    const exchangeRateNativeToUsd = quotes[0].exchangeRateNativeToUsd
+    const quote = quotes[0]
+
+    if (quote === undefined) {
+        throw new Error(`No token quote found for ${token}`)
+    }
+
+    const postOpGas = quote.postOpGas
+    const exchangeRate = quote.exchangeRate
+    const exchangeRateNativeToUsd = quote.exchangeRateNativeToUsd
 
     const userOperationMaxCost = getRequiredPrefund({
         userOperation,

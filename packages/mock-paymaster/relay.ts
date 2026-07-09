@@ -181,6 +181,17 @@ const handleMethod = async ({
         [entryPoint08Address]: paymaster08
     }
 
+    const getPaymaster = (entryPoint: Address): Address => {
+        const paymaster = epToPaymaster[entryPoint]
+        if (paymaster === undefined) {
+            throw new RpcError(
+                "EntryPoint not supported",
+                ValidationErrors.InvalidFields
+            )
+        }
+        return paymaster
+    }
+
     if (parsedBody.method === "pm_sponsorUserOperation") {
         const params = pmSponsorUserOperationParamsSchema.safeParse(
             parsedBody.params
@@ -201,7 +212,7 @@ const handleMethod = async ({
             userOperation,
             paymasterMode: { mode: "verifying" },
             bundler: bundlerClient,
-            paymaster: epToPaymaster[entryPoint],
+            paymaster: getPaymaster(entryPoint),
             publicClient,
             paymasterSigner,
             estimateGas: true
@@ -242,7 +253,7 @@ const handleMethod = async ({
         return {
             ...getDummyPaymasterData({
                 is06,
-                paymaster: epToPaymaster[entryPoint],
+                paymaster: getPaymaster(entryPoint),
                 paymasterMode
             }),
             ...dummyPaymasterGas,
@@ -268,7 +279,7 @@ const handleMethod = async ({
             signer: paymasterSigner,
             userOp: userOperation as UserOperation,
             paymasterMode: getPaymasterMode(data),
-            paymaster: epToPaymaster[entryPoint],
+            paymaster: getPaymaster(entryPoint),
             publicClient
         })
     }

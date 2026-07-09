@@ -46,6 +46,48 @@ jobs:
       - name: Build
         run: bun run build
 
+  package-types:
+    name: Package types (node10 + bundler consumers)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v6
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Build permissionless
+        run: bun run build:permissionless:tsgo
+
+      - name: Pack tarball into fixture
+        working-directory: packages/permissionless
+        run: npm pack --pack-destination ../../.github/fixtures/type-consumer
+
+      - name: Install fixture dependencies
+        working-directory: .github/fixtures/type-consumer
+        run: |
+          npm install --no-package-lock
+          npm install --no-package-lock --no-save ./permissionless-*.tgz
+
+      - name: Type-check as a node10 consumer
+        working-directory: .github/fixtures/type-consumer
+        run: npx tsc -p tsconfig.node10.json
+
+      - name: Type-check as a bundler consumer
+        working-directory: .github/fixtures/type-consumer
+        run: npx tsc -p tsconfig.bundler.json
+
+      - name: Lint package publishing metadata (advisory)
+        working-directory: packages/permissionless
+        continue-on-error: true
+        run: npx --yes publint --strict
+
   docker-e2e:
     name: E2E-Coverage
     runs-on: ubuntu-latest
