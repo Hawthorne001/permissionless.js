@@ -39,6 +39,7 @@ import { getAction } from "viem/utils"
 import { getAccountNonce } from "../../actions/public/getAccountNonce.js"
 import { decode7579Calls } from "../../utils/decode7579Calls.js"
 import { encode7579Calls } from "../../utils/encode7579Calls.js"
+import { sortAddresses } from "../../utils/sortAddresses.js"
 import { type EthereumProvider, toOwner } from "../../utils/toOwner.js"
 
 const wrapMessageHash = (
@@ -170,9 +171,7 @@ export async function toNexusSmartAccount(
                 args: [
                     localOwner.address,
                     index,
-                    attesters.sort((left, right) =>
-                        left.toLowerCase().localeCompare(right.toLowerCase())
-                    ),
+                    sortAddresses(attesters),
                     threshold
                 ]
             })
@@ -215,9 +214,7 @@ export async function toNexusSmartAccount(
                 args: [
                     localOwner.address,
                     index,
-                    attesters.sort((left, right) =>
-                        left.toLowerCase().localeCompare(right.toLowerCase())
-                    ),
+                    sortAddresses(attesters),
                     threshold
                 ]
             })
