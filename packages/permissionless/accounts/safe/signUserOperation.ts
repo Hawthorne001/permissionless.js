@@ -30,9 +30,17 @@ import {
 export const concatSignatures = (
     signatures: { signer: Address; data: Hex; dynamic: boolean }[]
 ) => {
-    signatures.sort((left, right) =>
-        left.signer.toLowerCase().localeCompare(right.signer.toLowerCase())
-    )
+    signatures.sort((left, right) => {
+        const leftSigner = left.signer.toLowerCase()
+        const rightSigner = right.signer.toLowerCase()
+        if (leftSigner < rightSigner) {
+            return -1
+        }
+        if (leftSigner > rightSigner) {
+            return 1
+        }
+        return 0
+    })
 
     const SIGNATURE_LENGTH_BYTES = 65
     let signatureBytes = "0x"

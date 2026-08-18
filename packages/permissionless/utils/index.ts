@@ -5,6 +5,7 @@ export {
     getRequiredPrefund
 } from "./getRequiredPrefund.js"
 export { isSmartAccountDeployed } from "./isSmartAccountDeployed.js"
+export { sortAddresses } from "./sortAddresses.js"
 export { toOwner } from "./toOwner.js"
 
 export { decodeNonce } from "./decodeNonce.js"

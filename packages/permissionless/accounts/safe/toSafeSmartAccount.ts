@@ -48,6 +48,7 @@ import { decode7579Calls } from "../../utils/decode7579Calls.js"
 import { encode7579Calls } from "../../utils/encode7579Calls.js"
 import { isSmartAccountDeployed } from "../../utils/isSmartAccountDeployed.js"
 import { getOxExports } from "../../utils/ox.js"
+import { sortAddresses } from "../../utils/sortAddresses.js"
 import { type EthereumProvider, toOwner } from "../../utils/toOwner.js"
 import {
     concatSignatures,
@@ -673,9 +674,7 @@ const get7579LaunchPadInitData = ({
                     module: hook.address,
                     initData: hook.context
                 })),
-                attesters.sort((left, right) =>
-                    left.toLowerCase().localeCompare(right.toLowerCase())
-                ),
+                sortAddresses(attesters),
                 attestersThreshold
             ]
         }),
