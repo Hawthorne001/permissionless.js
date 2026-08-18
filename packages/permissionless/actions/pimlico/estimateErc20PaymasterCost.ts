@@ -99,7 +99,7 @@ export const estimateErc20PaymasterCost = async <
     const costInToken = (maxCostInWei * exchangeRate) / BigInt(1e18)
 
     // represents the userOperation's max cost in usd (with 6 decimals of precision)
-    const costInUsd = (maxCostInWei * exchangeRateNativeToUsd) / 10n ** 18n
+    const costInUsd = (maxCostInWei * exchangeRateNativeToUsd) / BigInt(1e18)
 
     return {
         costInToken,
