@@ -129,7 +129,7 @@ export const setupContracts = async (rpc: string) => {
         bytecode: SAFE_SINGLETON_FACTORY_BYTECODE
     })
 
-    await Promise.all([
+    const deployHashes = await Promise.all([
         walletClient.sendTransaction({
             to: DETERMINISTIC_DEPLOYER,
             data: ENTRY_POINT_V08_CREATECALL,
@@ -552,6 +552,12 @@ export const setupContracts = async (rpc: string) => {
             nonce: nonce++
         })
     ])
+
+    await Promise.all(
+        deployHashes.map((hash) =>
+            client.waitForTransactionReceipt({ hash, pollingInterval: 50 })
+        )
+    )
 
     const rhinestoneAttester = "0x000000333034E9f539ce08819E12c1b8Cb29084d"
     await anvilClient.setBalance({
