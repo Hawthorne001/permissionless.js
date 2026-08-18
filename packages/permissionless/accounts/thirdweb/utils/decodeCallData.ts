@@ -38,11 +38,15 @@ export const decodeCallData = async (callData: Hex) => {
         }[] = []
 
         for (let i = 0; i < decodedBatch.args[0].length; i++) {
-            calls.push({
-                to: decodedBatch.args[0][i],
-                value: decodedBatch.args[1][i],
-                data: decodedBatch.args[2][i]
-            })
+            const to = decodedBatch.args[0][i]
+            const value = decodedBatch.args[1][i]
+            const data = decodedBatch.args[2][i]
+
+            if (to === undefined || data === undefined) {
+                throw new Error("Invalid batch call data")
+            }
+
+            calls.push({ to, value, data })
         }
 
         return calls

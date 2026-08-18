@@ -8,25 +8,27 @@ import type {
     Transport
 } from "viem"
 import { createClient } from "viem"
-import type { PasskeyServerRpcSchema } from "../types/passkeyServer.js"
+import type { PasskeyServerRpcSchema } from "../../types/passkeyServer.js"
 import {
     type PasskeyServerActions,
     passkeyServerActions
-} from "./decorators/passkeyServer.js"
+} from "../decorators/passkeyServer.js"
+
+type PasskeyServerClientInner<rpcSchema extends RpcSchema | undefined> = Client<
+    Transport,
+    Chain | undefined,
+    Account | undefined,
+    rpcSchema extends RpcSchema
+        ? [...PasskeyServerRpcSchema, ...rpcSchema]
+        : [...PasskeyServerRpcSchema],
+    PasskeyServerActions
+>
 
 export type PasskeyServerClient<
     rpcSchema extends RpcSchema | undefined = undefined
-> = Prettify<
-    Client<
-        Transport,
-        Chain | undefined,
-        Account | undefined,
-        rpcSchema extends RpcSchema
-            ? [...PasskeyServerRpcSchema, ...rpcSchema]
-            : [...PasskeyServerRpcSchema],
-        PasskeyServerActions
-    >
->
+> = {
+    [key in keyof PasskeyServerClientInner<rpcSchema>]: PasskeyServerClientInner<rpcSchema>[key]
+}
 
 export type PasskeyServerClientConfig<
     rpcSchema extends RpcSchema | undefined = undefined

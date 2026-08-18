@@ -1,5 +1,11 @@
 # @pimlico/mock-paymaster
 
+## 0.0.8
+
+### Patch Changes
+
+- ddb762fb4b05f0edb9bdb5f4d67abb5493563eac: Internal: paymaster lookups by entryPoint now go through a narrowing helper; the package compiles under `noUncheckedIndexedAccess`.
+
 ## 0.0.7
 
 ### Patch Changes

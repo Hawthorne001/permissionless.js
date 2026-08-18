@@ -29,31 +29,56 @@ import {
  *  - Add docs
  *  - Fix typing, 'accounts' is required to signMessage, signTypedData, signTransaction, but not needed here, since account is embedded in the client
  */
-export type SmartAccountClient<
-    transport extends Transport = Transport,
-    chain extends Chain | undefined = Chain | undefined,
-    account extends SmartAccount | undefined = SmartAccount | undefined,
-    client extends Client | undefined = Client | undefined,
-    rpcSchema extends RpcSchema | undefined = undefined
-> = Prettify<
-    Client<
-        transport,
-        chain extends Chain
-            ? chain
-            : client extends Client<any, infer chain>
-              ? chain
-              : undefined,
-        account,
-        rpcSchema extends RpcSchema
-            ? [...BundlerRpcSchema, ...rpcSchema]
-            : BundlerRpcSchema,
-        BundlerActions<account> & SmartAccountActions<chain, account>
-    >
+type SmartAccountClientInner<
+    transport extends Transport,
+    chain extends Chain | undefined,
+    account extends SmartAccount | undefined,
+    client extends Client | undefined,
+    rpcSchema extends RpcSchema | undefined
+> = Client<
+    transport,
+    chain extends Chain
+        ? chain
+        : // biome-ignore lint/suspicious/noExplicitAny: We need any to infer the chain type
+          client extends Client<any, infer chain>
+          ? chain
+          : undefined,
+    account,
+    rpcSchema extends RpcSchema
+        ? [...BundlerRpcSchema, ...rpcSchema]
+        : BundlerRpcSchema,
+    BundlerActions<account> & SmartAccountActions<chain, account>
 > & {
     client: client
     paymaster: BundlerClientConfig["paymaster"] | undefined
     paymasterContext: BundlerClientConfig["paymasterContext"] | undefined
     userOperation: BundlerClientConfig["userOperation"] | undefined
+}
+
+// Variance annotations referred from viem:
+// https://github.com/wevm/viem/blob/main/src/actions/public/simulateContract.ts#L129
+export type SmartAccountClient<
+    out transport extends Transport = Transport,
+    /** @ts-expect-error cast variance */
+    out chain extends Chain | undefined = Chain | undefined,
+    /** @ts-expect-error cast variance */
+    out account extends SmartAccount | undefined = SmartAccount | undefined,
+    out client extends Client | undefined = Client | undefined,
+    rpcSchema extends RpcSchema | undefined = undefined
+> = {
+    [key in keyof SmartAccountClientInner<
+        transport,
+        chain,
+        account,
+        client,
+        rpcSchema
+    >]: SmartAccountClientInner<
+        transport,
+        chain,
+        account,
+        client,
+        rpcSchema
+    >[key]
 }
 
 export type SmartAccountClientConfig<

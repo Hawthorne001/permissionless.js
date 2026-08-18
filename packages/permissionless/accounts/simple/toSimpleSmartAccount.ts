@@ -374,11 +374,19 @@ export async function toSimpleSmartAccount<
                     const datas = decodedV7.args[2]
 
                     for (let i = 0; i < destinations.length; i++) {
-                        calls.push({
-                            to: destinations[i],
-                            data: datas[i],
-                            value: values[i]
-                        })
+                        const to = destinations[i]
+                        const data = datas[i]
+                        const value = values[i]
+
+                        if (
+                            to === undefined ||
+                            data === undefined ||
+                            value === undefined
+                        ) {
+                            throw new Error("Invalid batch call data")
+                        }
+
+                        calls.push({ to, data, value })
                     }
 
                     return calls
@@ -394,11 +402,14 @@ export async function toSimpleSmartAccount<
                     const datas = decodedV6.args[1]
 
                     for (let i = 0; i < destinations.length; i++) {
-                        calls.push({
-                            to: destinations[i],
-                            data: datas[i],
-                            value: 0n
-                        })
+                        const to = destinations[i]
+                        const data = datas[i]
+
+                        if (to === undefined || data === undefined) {
+                            throw new Error("Invalid batch call data")
+                        }
+
+                        calls.push({ to, data, value: 0n })
                     }
 
                     return calls

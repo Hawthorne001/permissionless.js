@@ -1,4 +1,4 @@
 export {
     type GetGasPriceResponseReturnType,
     getUserOperationGasPrice
-} from "./etherspot/getUserOperationGasPrice.js"
+} from "./getUserOperationGasPrice.js"

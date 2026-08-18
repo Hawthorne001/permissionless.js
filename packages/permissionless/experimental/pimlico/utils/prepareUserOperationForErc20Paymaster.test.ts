@@ -21,7 +21,7 @@ import {
     getPublicClient
 } from "../../../../permissionless-test/src/utils"
 import { createSmartAccountClient } from "../../../clients/createSmartAccountClient"
-import { createPimlicoClient } from "../../../clients/pimlico"
+import { createPimlicoClient } from "../../../clients/pimlico/index.js"
 import { prepareUserOperationForErc20Paymaster } from "./prepareUserOperationForErc20Paymaster"
 
 describe.each(getCoreSmartAccounts())(

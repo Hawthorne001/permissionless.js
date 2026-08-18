@@ -20,6 +20,7 @@ export const useAvailableCapabilities = () => {
     const memoisedCapabilities = useMemo(() => {
         if (!availableCapabilities || !account.chainId) return undefined
         const capabilitiesForChain = availableCapabilities[account.chainId]
+        if (capabilitiesForChain === undefined) return undefined
         if (capabilitiesConfigured === undefined) return undefined
 
         let capabilities: WalletSendCallsParameters<WalletCapabilities>[number]["capabilities"] =
