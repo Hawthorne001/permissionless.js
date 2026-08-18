@@ -7,6 +7,7 @@ import {
     encodeAbiParameters,
     getTypesForEIP712Domain,
     hashTypedData,
+    isAddressEqual,
     validateTypedData
 } from "viem"
 
@@ -18,10 +19,11 @@ export async function signTypedData(
     }
 ): Promise<SignTypedDataReturnType> {
     const { admin, accountAddress, chainId, ...typedData } = parameters
+    const verifyingContract = (typedData.domain as TypedDataDomain)
+        ?.verifyingContract
     const isSelfVerifyingContract =
-        (
-            typedData.domain as TypedDataDomain
-        )?.verifyingContract?.toLowerCase() === accountAddress
+        !!verifyingContract &&
+        isAddressEqual(verifyingContract as Address, accountAddress)
 
     // If this is a self-verifying contract, we can use the admin's signature
     if (isSelfVerifyingContract) {
